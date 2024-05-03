@@ -10,15 +10,24 @@ from habits.models import Habit
 
 
 def remind_of_habit(habit_id):
+    """
+    Напоминание о выполнении привычки
+    :param habit_id: id сущности привычки
+    """
     habit = Habit.objects.get(pk=habit_id)
     if habit.owner.chat_id:
-        message = f'''Привет!\nНе забудь сегодня выполнить привычку: 
+        message = f'''Привет!\nНе забудь сегодня выполнить привычку:
 "{habit.action}" в {habit.time.strftime("%H:%M")}
 Место: {habit.place}'''
         send_tg_message(message, habit.owner.chat_id)
 
 
 def send_tg_message(message, chat_id):
+    """
+    Отправка сообщения в Telegram
+    :param message: текст сообщения для отправки
+    :param chat_id: id чата с пользователем в Telegram
+    """
     params = {
         'text': message,
         'chat_id': chat_id
@@ -34,6 +43,10 @@ def send_tg_message(message, chat_id):
 
 
 def create_periodic_task(habit):
+    """
+    Создание периодической задачи Celery
+    :param habit: объект модели привычки (Habit)
+    """
     schedule, created = IntervalSchedule.objects.get_or_create(
         every=habit.periodicity,
         period=IntervalSchedule.DAYS,
@@ -50,6 +63,10 @@ def create_periodic_task(habit):
 
 
 def update_periodic_task(habit):
+    """
+    Изменение периодической задачи Celery
+    :param habit: объект модели привычки (Habit)
+    """
     schedule, created = IntervalSchedule.objects.get_or_create(
         every=habit.periodicity,
         period=IntervalSchedule.DAYS,
@@ -64,4 +81,8 @@ def update_periodic_task(habit):
 
 
 def delete_periodic_task(habit):
+    """
+    Удаление периодической задачи Celery
+    :param habit: объект модели привычки (Habit)
+    """
     PeriodicTask.objects.filter(name=f'Send Habit {habit.pk} notification').delete()

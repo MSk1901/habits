@@ -4,6 +4,13 @@ from rest_framework import serializers
 
 
 class HabitTreatValidator:
+    """
+    Валидатор поля treat (вознаграждение)
+    Проверяет условия:
+    - В модели не должно быть заполнено одновременно и поле вознаграждения, и поле связанной привычки.
+    Можно заполнить только одно из двух полей.
+    - У приятной привычки не может быть вознаграждения.
+    """
     def __init__(self, field):
         self.field = field
 
@@ -19,6 +26,12 @@ class HabitTreatValidator:
 
 
 class LinkedHabitValidator:
+    """
+    Валидатор поля связанной приятной привычки (is_enjoyable)
+    Проверяет условия:
+    - У приятной привычки не может быть связанной привычки.
+    - В связанные привычки могут попадать только привычки с признаком приятной привычки.
+    """
     def __init__(self, field):
         self.field = field
 
@@ -33,6 +46,11 @@ class LinkedHabitValidator:
 
 
 class HabitDurationValidator:
+    """
+    Валидатор поля времени выполнения (duration)
+    Проверяет условие:
+    - Время выполнения привычки должно быть не больше 120 секунд.
+    """
     def __init__(self, field):
         self.field = field
 

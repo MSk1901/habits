@@ -9,7 +9,7 @@ from users.models import User
 
 
 class HabitTestCase(APITestCase):
-
+    """Тест кейс для модели привычки"""
     def setUp(self):
         self.user = User.objects.create(email='test@test.ru')
         self.user2 = User.objects.create(email='test2@test.ru')
@@ -30,6 +30,7 @@ class HabitTestCase(APITestCase):
                                                     owner=self.user)
 
     def test_habit_list_public(self):
+        """Тест вывода списка публичных привычек"""
         url = reverse('habits:public')
         response = self.client.get(url)
 
@@ -37,6 +38,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(Habit.objects.all().count(), 2)
 
     def test_habit_list_for_owner(self):
+        """Тест вывода списка привычек определенного пользователя"""
         url = reverse('habits:my-habits')
 
         response = self.client.get(url)
@@ -61,6 +63,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(len(data.get('results')), 2)
 
     def test_habit_retrieve(self):
+        """Тест вывода одной привычки пользователя"""
         url = reverse('habits:retrieve', args=(self.habit.pk,))
 
         response = self.client.get(url)
@@ -77,6 +80,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(data.get('id'), self.habit.pk)
 
     def test_habit_update(self):
+        """Тест обновления привычки"""
         url = reverse('habits:update', args=(self.habit.pk,))
         data = {'action': 'Updated test action'}
 
@@ -93,6 +97,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(response.json().get('action'), 'Updated test action')
 
     def test_habit_delete(self):
+        """Тест удаления привычки"""
         url = reverse('habits:delete', args=(self.habit.pk,))
 
         response = self.client.delete(url)
@@ -108,6 +113,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(Habit.objects.all().count(), 1)
 
     def test_habit_create(self):
+        """Тест создания привычки"""
         url = reverse('habits:create')
         data = {
             'place': 'Test place 2',

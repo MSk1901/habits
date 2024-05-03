@@ -5,6 +5,7 @@ from habits.models import NULLABLE
 
 
 class User(AbstractUser):
+    """Модель пользователя"""
     username = None
     email = models.EmailField(verbose_name='почта', unique=True)
     chat_id = models.CharField(max_length=50, verbose_name='ID чата в Telegram', **NULLABLE)

@@ -9,6 +9,7 @@ from habits.services import create_periodic_task, update_periodic_task, delete_p
 
 
 class HabitCreateAPIView(generics.CreateAPIView):
+    """Представление для создания новой привычки"""
     serializer_class = HabitSerializer
 
     def perform_create(self, serializer):
@@ -17,12 +18,14 @@ class HabitCreateAPIView(generics.CreateAPIView):
 
 
 class HabitRetrieveAPIView(generics.RetrieveAPIView):
+    """Представление для вывода одной привычки"""
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     permission_classes = [OwnerPermission]
 
 
 class HabitUpdateAPIView(generics.UpdateAPIView):
+    """Представление для редактирования одной привычки"""
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     permission_classes = [OwnerPermission]
@@ -33,6 +36,7 @@ class HabitUpdateAPIView(generics.UpdateAPIView):
 
 
 class HabitDestroyAPIView(generics.DestroyAPIView):
+    """Представление для судаления одной привычки"""
     queryset = Habit.objects.all()
     serializer_class = HabitSerializer
     permission_classes = [OwnerPermission]
@@ -43,6 +47,7 @@ class HabitDestroyAPIView(generics.DestroyAPIView):
 
 
 class MyHabitListAPIView(generics.ListAPIView):
+    """Представление для вывода списка привычек пользователя"""
     serializer_class = HabitSerializer
     pagination_class = MyPagination
 
@@ -52,6 +57,7 @@ class MyHabitListAPIView(generics.ListAPIView):
 
 
 class PublicHabitListAPIView(generics.ListAPIView):
+    """Представление для вывода списка публичных привычек"""
     serializer_class = HabitSerializer
     permission_classes = [AllowAny]
     pagination_class = MyPagination

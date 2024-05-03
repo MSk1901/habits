@@ -1,5 +1,3 @@
-from django.test import TestCase
-from django.core.management import call_command
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -8,11 +6,12 @@ from users.models import User
 
 
 class HabitTestCase(APITestCase):
-
+    """Тест-сьют для модели позователя"""
     def setUp(self):
         self.user = User.objects.create(email='test@test.ru')
 
     def test_user_register_login(self):
+        """Тест регистрации и аутентификации пользователя"""
         url = reverse('users:register')
         data = {
             'email': 'test1@test.ru',
