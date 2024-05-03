@@ -38,5 +38,5 @@ class HabitDurationValidator:
 
     def __call__(self, value):
         duration = value.get(self.field)
-        if duration > timedelta(minutes=2):
+        if duration and duration > timedelta(minutes=2):
             raise serializers.ValidationError('Время выполнения привычки не должно превышать 2 минуты')
