@@ -34,6 +34,7 @@ class HabitUpdateAPIView(generics.UpdateAPIView):
 
 class HabitDestroyAPIView(generics.DestroyAPIView):
     queryset = Habit.objects.all()
+    serializer_class = HabitSerializer
     permission_classes = [OwnerPermission]
 
     def perform_destroy(self, instance):
