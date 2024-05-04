@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from rest_framework import serializers
 
 
@@ -43,18 +41,3 @@ class LinkedHabitValidator:
 
         if linked_habit and not linked_habit.is_enjoyable:
             raise serializers.ValidationError('Связанная привычка должна быть приятной')
-
-
-class HabitDurationValidator:
-    """
-    Валидатор поля времени выполнения (duration)
-    Проверяет условие:
-    - Время выполнения привычки должно быть не больше 120 секунд.
-    """
-    def __init__(self, field):
-        self.field = field
-
-    def __call__(self, value):
-        duration = value.get(self.field)
-        if duration and duration > timedelta(minutes=2):
-            raise serializers.ValidationError('Время выполнения привычки не должно превышать 2 минуты')

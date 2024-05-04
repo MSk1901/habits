@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from django.conf import settings
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
@@ -36,7 +39,8 @@ class Habit(models.Model):
     treat = models.CharField(max_length=200,
                              verbose_name='вознаграждение',
                              **NULLABLE)
-    duration = models.DurationField(verbose_name='время на выполнение')
+    duration = models.DurationField(verbose_name='время на выполнение',
+                                    validators=[MaxValueValidator(timedelta(seconds=120))])
     is_public = models.BooleanField(verbose_name='публичная')
 
     def __str__(self):
