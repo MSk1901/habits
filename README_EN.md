@@ -28,57 +28,49 @@
 ```
 git clone https://github.com/MSk1901/habits.git
 ```
-#### 2. Navigate to the project directory, create a virtual environment and install dependencies:
-```
-cd habits
-```
-- Using pip
-```
-python3 -m venv venv
-```
-```
-pip install -r requirements.txt
-```
-- Using poetry
-```
-poetry init
-```
-```
-poetry install
-```
-#### 3. Set up environment variables: 
+#### 2. Navigate to the project root directory
+#### 3. Set up environment variables:
 
-   1. Create a `.env` file in the root directory 
-   2. Copy the contents of the `.env.sample` file into it and replace with your values
+   1. Create a file named `.env` in the root directory
+   2. Copy the contents of the `.env.sample` file into it and replace the values with your own
+   3. For the project to work correctly in the local development environment, set the value of `DEBUG=True` to automatically handle static files and provide detailed error messages.
 
-#### 4. Create and apply migrations:
+
+#### 4. Run the command to build and start Docker containers:
 ```
-python3 manage.py makemigrations
-```
-```
-python3 manage.py migrate
+docker-compose up -d --build
 ```
 </details>
 
 <details>
 <summary>Usage</summary>
 
-#### 1. Run the development server:
-```
-python3 manage.py runserver
-```
-Open your browser and go to http://127.0.0.1:8000/ or http://localhost:8000/
+#### 1. Admin Panel:
+To access the admin panel, create a superuser
 
-#### 2. Administrative Panel:
-1. To access the admin panel, create a superuser:
-```
-python3 manage.py csu
-```
-2. Open the administrative panel at http://127.0.0.1:8000/admin/ or http://localhost:8000/admin/
-   - Enter your email and password
-   - Login credentials are located in the `/users/management/commands/csu.py` file. If desired, you can set your own email and password and re-run the command
+1. You will need to view the list of running containers and copy the container id of the app container
+    ```
+    docker ps
+    ```
+    Example output:
+    ```
+    CONTAINER ID   IMAGE                                                         
+    e5e38dccec3d   drf-lms-app                
+    ```
+2. Then execute the command to enter the container and execute commands available in its environment
+    ```
+    docker exec -it <container id> bash
+    ```
+3. To create a superuser (admin), execute the command
+    ```
+    python3 manage.py createsuperuser
+    ```
+   You can view the superuser's email and password for logging into the admin panel in the `/users/management/commands/csu.py` file. If desired, you can set your own email and password.
+
+
+4. Open the administrative panel at http://localhost:8000/admin/ and enter the email and password of the superuser
           
-#### 3. Setting up Telegram notifications:
+#### 2. Setting up Telegram notifications:
 1. To send notifications, the user's `chat_id` field must be filled. The value is the chat id in Telegram.
 2. The field can be filled in:
    - During registration.
@@ -92,7 +84,7 @@ python3 manage.py csu
         ```
    - In the administrative panel.
      Fill in the required field when creating or editing a user
-#### 4. Creating a habit:
+#### 3. Creating a habit:
 1. Obtain the `Bearer token` of the created user at http://127.0.0.1:8000/users/login/
 2. To create a habit, go to http://127.0.0.1:8000/users/register/
 3. Specify the token in the request header
@@ -110,7 +102,7 @@ python3 manage.py csu
       }
       ```
 
-#### 5. Other interaction methods:
+#### 4. Other interaction methods:
 You can find all interaction methods in the documentation
 </details>
 
