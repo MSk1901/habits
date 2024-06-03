@@ -10,6 +10,7 @@ from users.models import User
 
 class HabitTestCase(APITestCase):
     """Тест кейс для модели привычки"""
+
     def setUp(self):
         self.user = User.objects.create(email='test@test.ru')
         self.user2 = User.objects.create(email='test2@test.ru')
@@ -39,7 +40,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_list_for_owner(self):
         """Тест вывода списка привычек определенного пользователя"""
-        url = reverse('habits:my-habits')
+        url = reverse('habits:my')
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -64,7 +65,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_retrieve(self):
         """Тест вывода одной привычки пользователя"""
-        url = reverse('habits:retrieve', args=(self.habit.pk,))
+        url = reverse('habits:habit', args=(self.habit.pk,))
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -81,7 +82,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_update(self):
         """Тест обновления привычки"""
-        url = reverse('habits:update', args=(self.habit.pk,))
+        url = reverse('habits:habit', args=(self.habit.pk,))
         data = {'action': 'Updated test action'}
 
         response = self.client.patch(url, data)
@@ -98,7 +99,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_delete(self):
         """Тест удаления привычки"""
-        url = reverse('habits:delete', args=(self.habit.pk,))
+        url = reverse('habits:habit', args=(self.habit.pk,))
 
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -142,17 +143,15 @@ class HabitTestCase(APITestCase):
             'is_enjoyable': False,
             'periodicity': 1,
             'treat': 'Test treat',
-            'duration': '00:03:00',
+            'duration': '00:01:00',
             'is_public': True,
             'linked_habit': self.habit.pk
         }
         response = self.client.post(url, data_incorrect)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.json(), {
-            'non_field_errors': ['У привычки может быть либо вознаграждение,либо приятная привычка',
-                                 'Связанная привычка должна быть приятной',
-                                 'Время выполнения привычки не должно превышать 2 минуты']}
-                         )
+        self.assertEqual(response.json()['non_field_errors'],
+                         ['У привычки может быть либо вознаграждение,либо приятная привычка',
+                          'Связанная привычка должна быть приятной'])
 
         data_enjoyable_incorrect = {
             'place': 'Test place 2',

@@ -16,29 +16,15 @@ class HabitCreateAPIView(generics.CreateAPIView):
         create_periodic_task(habit)
 
 
-class HabitRetrieveAPIView(generics.RetrieveAPIView):
-    """Представление для вывода одной привычки"""
-    queryset = Habit.objects.all()
+class HabitRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    """Представление для просмотра, обновления и удаления одной привычки"""
     serializer_class = HabitSerializer
-    permission_classes = [OwnerPermission]
-
-
-class HabitUpdateAPIView(generics.UpdateAPIView):
-    """Представление для редактирования одной привычки"""
     queryset = Habit.objects.all()
-    serializer_class = HabitSerializer
     permission_classes = [OwnerPermission]
 
     def perform_update(self, serializer):
         habit = serializer.save()
         update_periodic_task(habit)
-
-
-class HabitDestroyAPIView(generics.DestroyAPIView):
-    """Представление для судаления одной привычки"""
-    queryset = Habit.objects.all()
-    serializer_class = HabitSerializer
-    permission_classes = [OwnerPermission]
 
     def perform_destroy(self, instance):
         delete_periodic_task(instance)
