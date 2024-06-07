@@ -63,7 +63,7 @@ To access the admin panel, create a superuser
     ```
 3. To create a superuser (admin), execute the command
     ```
-    python3 manage.py createsuperuser
+    python3 manage.py csu
     ```
    You can view the superuser's email and password for logging into the admin panel in the `/users/management/commands/csu.py` file. If desired, you can set your own email and password.
 
