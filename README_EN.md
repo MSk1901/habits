@@ -86,9 +86,9 @@ To access the admin panel, create a superuser
      Fill in the required field when creating or editing a user
 #### 3. Creating a habit:
 1. Obtain the `Bearer token` of the created user at http://127.0.0.1:8000/users/login/
-2. To create a habit, go to http://127.0.0.1:8000/users/register/
+2. To create a habit, use http://127.0.0.1:8000/habits/
 3. Specify the token in the request header
-4. Specify fields in the request body in JSON format:
+4. Specify fields in the request body in JSON format and send POST request:
       ```
       {
           "place": "Home",
